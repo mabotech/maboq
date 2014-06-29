@@ -4,6 +4,10 @@
     
     "port":62261
     
-    }    
+    },
+    
+       "db":{
+        "con_string": "postgres://mabotech:mabouser@localhost:6432/maboss"
+    }
     
 }

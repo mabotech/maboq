@@ -24,11 +24,37 @@ var logger = winston.loggers.add('server', {
 
 nconf.file('config.json');
 
+var pg = require('pg'); 
+//or native libpq bindings
+//var pg = require('pg').native
+
+var con_string =  nconf.get("db").con_string
+
+var client = new pg.Client(con_string);
+
+client.connect(function(err) {
+  if(err) {
+    return console.error('could not connect to postgres', err);
+  }
+
+});
+
 var jobs = kue.createQueue();
 
 
-jobs.process('new job', function(job, done) {
+jobs.process('callproc', function(job, done) {
     /* carry out all the job function here */
+    
+    var sql = 'SELECT NOW() AS "now"';
+    
+    client.query(sql, function(err, result) {
+        if(err) {
+          return console.error('error running query', err);
+        }
+    console.log(result.rows[0].now);
+    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
+  //  client.end();
+  });
 
     logger.debug(job.created_at, job.data);
 

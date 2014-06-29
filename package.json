@@ -1,0 +1,39 @@
+{
+    "name": "maboq",
+    "description": "mabo job queue",
+    "version": "0.0.1",
+    "keywords": [
+        "maboq",
+        "application",
+        "job",
+        "platform"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/mabotech/maboq.git"
+    },
+    "scripts": {
+        "start": "node --harmony server.js"
+    },
+    "engines": {
+        "node": ">= 0.11.9"
+    },
+    "files": [
+        "index.js"
+    ],
+    "devDependencies": {
+        "kue": "*",
+        "debug": "debug",
+        "mocha": "*",
+        "should": "*",
+    },
+    "license": "MIT",
+    "dependencies": {
+        "kue": "*",
+        "pg.js": "",
+        "pg": "",
+        "winston": "*",
+        "nconf": "*",
+        "redis": "*"
+    }
+}   

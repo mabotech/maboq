@@ -7,9 +7,11 @@ var jobs = kue.createQueue();
 
 function newJob(name) {
     name = name || 'Default_Name';
-    var job = jobs.create('new job', {
+    // queue name: callproc
+    var job = jobs.create('callproc', {
         name: name,
-        id: 101
+        method:"mt_query_time",
+        params:  JSON.stringify({"p1":"a","p2":"b"})
     });
     job
         .on('complete', function() {
@@ -23,5 +25,5 @@ function newJob(name) {
 
 
 setInterval(function() {
-    newJob('Send_Email');
+    newJob('TimeQuery');
 }, 5000);
