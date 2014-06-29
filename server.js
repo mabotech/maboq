@@ -41,6 +41,9 @@ client.connect(function(err) {
 
 var jobs = kue.createQueue();
 
+jobs.process('rpc', function(job, done){
+    done && done();
+});
 
 jobs.process('callproc', function(job, done) {
     /* carry out all the job function here */

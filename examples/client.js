@@ -5,6 +5,7 @@ var kue = require('kue');
 var uuid = require('uuid');
 var jobs = kue.createQueue();
 
+var i = 0;
 // client instance id
 var ciid = uuid.v4();
 /*
@@ -14,9 +15,16 @@ function newJob(name) {
     //
     name = name || 'Default_Name';
     // queue name: callproc
-    var job = jobs.create('callproc', {
-        title:"new job",
-        name: name,
+    i = i +1
+    var  queue_name = 'callproc' ;
+    
+    if (i % 3==1){
+        queue_name = 'rpc'
+    } 
+        
+    var job = jobs.create(queue_name, {
+        title:queue_name + i,
+        name: queue_name +i,
         uuid:ciid,
         client:"example",
         method:"mt_query_time",
