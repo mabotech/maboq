@@ -5,6 +5,8 @@ var kue = require('kue');
 var nconf = require('nconf');
 var winston = require('winston');
 
+var moment = require('moment');
+
 var logger = winston.loggers.add('server', {
     console: {
         //silent:true,
@@ -64,7 +66,12 @@ jobs.process('callproc', function(job, done) {
   //  client.end();
   });
 
-    logger.debug(job.created_at, job.data);
+ var t = moment( parseInt(job.created_at)).format();
+  
+logger.debug(t, job.data);
+  
+//  logger.debug(job.created_at);
+ //logger.debug( typeof(parseInt(job.created_at)));
 
     done && done();
 });
