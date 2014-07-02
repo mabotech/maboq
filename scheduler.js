@@ -1,4 +1,4 @@
-
+"use strict";
 
 var schedule = require('node-schedule');
 var moment = require('moment');

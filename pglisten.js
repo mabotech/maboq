@@ -1,3 +1,5 @@
+"use strict";
+
 var pg = require('pg');
 var con_string = "postgres://mabotech:mabouser@localhost:6432/maboss";
 var client = new pg.Client(con_string);

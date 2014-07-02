@@ -1,6 +1,5 @@
 "use strict";
 
-
 var kue = require('kue');
 var uuid = require('uuid');
 var jobs = kue.createQueue();
