@@ -5,7 +5,7 @@ var kue = require('kue');
 var nconf = require('nconf');
 var winston = require('winston');
 
-var moment = require('moment');
+
 
 var logger = winston.loggers.add('server', {
     console: {
@@ -25,7 +25,7 @@ var logger = winston.loggers.add('server', {
 });
 
 nconf.file('config.json');
-
+/*
 var pg = require('pg'); 
 //or native libpq bindings
 //var pg = require('pg').native
@@ -40,41 +40,34 @@ client.connect(function(err) {
   }
 
 });
+*/
 
 var jobs = kue.createQueue();
 
-jobs.process('rpc', function(job, done){
-    done && done();
-});
+//js lib as config?
+var action = require("./lib/jobs");
 
-jobs.process('callproc', function(job, done) {
-    /* carry out all the job function here */
-    
-    var sql = 'SELECT NOW() AS "now"';
-    
-    client.query(sql, function(err, result) {
-        if(err) {
-          return console.error('error running query', err);
-        }
-    var val = result.rows[0].now;
-    job.result = val;
-    
-    var msg = "job id: " + job.id + ', ' + val;
-    
-    console.log(msg);
-    //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-  //  client.end();
-  });
 
- var t = moment( parseInt(job.created_at)).format();
-  
-logger.debug(t, job.data);
-  
-//  logger.debug(job.created_at);
- //logger.debug( typeof(parseInt(job.created_at)));
+console.log(action);
 
-    done && done();
-});
+for(var name in action){
+    
+    logger.debug(name);
+    // make job process 
+    jobs.process(name, action[name]);    
+    
+}
+
+var actions = {"rpc":action.rpc, "callproc":action.callproc};
+
+//jobs.process('rpc', action.rpc);
+//jobs.process('callproc',action.callproc);
+
+for(var name in actions){
+  //  logger.debug("action:", name);
+   // jobs.process(name, actions[name]);    
+    
+}
 
 var server_conf = nconf.get("server")
 
