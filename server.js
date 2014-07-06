@@ -76,10 +76,10 @@ logger.debug(t, job.data);
     done && done();
 });
 
-var conf = nconf.get("server")
+var server_conf = nconf.get("server")
 
-logger.debug("port:", conf.port)
+logger.debug("port:", server_conf.port)
 
-kue.app.listen(conf.port);
+kue.app.listen(server_conf.port);
 
 
