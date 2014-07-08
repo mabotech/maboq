@@ -1,0 +1,7 @@
+{
+    
+    "Dirs":["../data"],
+    "Groups": ["GroupA"],
+    "Users": ["UserA","UserB"]
+
+}
