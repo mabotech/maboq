@@ -2,6 +2,9 @@
     
     "Dirs":["../data"],
     "Groups": ["GroupA"],
-    "Users": ["UserA","UserB"]
+    "Users": ["UserA","UserB"],
+    "Server":{        
+        "ip":"localhost"        
+        }
 
 }

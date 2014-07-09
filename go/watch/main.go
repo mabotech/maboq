@@ -7,13 +7,16 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 	"github.com/fsnotify/fsnotify"
 	"github.com/garyburd/redigo/redis"
 	"log"
 	"os"
+	"time"
 )
 
+type Server struct {
+	ip string
+}
 type Configuration struct {
 	Dirs   []string
 	Users  []string
@@ -29,13 +32,13 @@ func main() {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	fmt.Println(configuration.Groups[0]) // output: [UserA, UserB]
+	fmt.Println(configuration.Dirs) // output: [UserA, UserB]
 	//--------------
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	c, err := redis.DialTimeout("tcp", "localhost:6379", 0, 1*time.Second, 1*time.Second)
 
 	if err != nil {
@@ -43,17 +46,17 @@ func main() {
 		return
 	}
 	defer c.Close()
-	
+
 	n, err := c.Do("DBSIZE")
 	if err != nil {
-	fmt.Println(err)
+		fmt.Println(err)
 		return
 	}
 	log.Println(n)
 
 	c.Do("SET", "mabo", "sys")
-	v, err := redis.String( c.Do("GET", "mabo") )
-	
+	v, err := redis.String(c.Do("GET", "mabo"))
+
 	log.Println(v)
 
 	done := make(chan bool)
