@@ -8,14 +8,24 @@ code = """if redis.call("EXISTS", KEYS[1]) == 1 then
 
 local payload = redis.call("GET", KEYS[1])
 
-return payload 
+if payload == ARGV[1] then
+
+return "same"  
 
 else
 
-redis.call("SET", KEYS[1],"xxx")
+redis.call("SET", KEYS[1],ARGV[1])
+
+return payload
+
+end
+
+else
+
+redis.call("SET", KEYS[1],ARGV[1])
 return nil
 
 end"""
-v = r.eval(code, 2, "aas","aaa")
+v = r.eval(code, 1, "aac","xyz")
 
 print v
