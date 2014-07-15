@@ -16,6 +16,8 @@ fmt.Println("hi")
     if err != nil {
         log.Fatal("dialing:", err)
     }
+	
+	
 
 
 }
