@@ -1,31 +1,56 @@
+"""
+
+redis lua
+
+"""
+import time
+
 import redis
 
 
-r = redis.Redis(host='localhost', port=6379, db=0)  
 
+def main():
+    # connection pool
+    r = redis.Redis(host='localhost', port=6379, db=0)  
 
-code = """if redis.call("EXISTS", KEYS[1]) == 1 then
+    """
+    compare value 
+    update value when change
+    create job to update db when value change
+    set heartbeat pre tag
+    """
 
-local payload = redis.call("GET", KEYS[1])
+    lua_code = """if redis.call("EXISTS", KEYS[1]) == 1 then
+        local payload = redis.call("GET", KEYS[1])
+        if payload == ARGV[1] then
+            return "same"  
+        else
+            redis.call("SET", KEYS[1],ARGV[1])
+            return payload
+        end
+    else
+        redis.call("SET", KEYS[1],ARGV[1])
+        return nil
+    end"""
 
-if payload == ARGV[1] then
+    #benchmark
+    """
+    0.22 ms
+    4545 times/second
+    """
+    t1 = time.time()
+    n = 1000
+    for i in xrange(1, n):
+        v = r.eval(lua_code, 1, "aac","xyz")
 
-return "same"  
+    t2 = time.time()
 
-else
+    t =  (t2-t1)*1000/n
 
-redis.call("SET", KEYS[1],ARGV[1])
-
-return payload
-
-end
-
-else
-
-redis.call("SET", KEYS[1],ARGV[1])
-return nil
-
-end"""
-v = r.eval(code, 1, "aac","xyz")
-
-print v
+    print(t)
+    print(1000/t)
+    print(v)
+    
+    
+if __name__ == "__main__":
+    main()
