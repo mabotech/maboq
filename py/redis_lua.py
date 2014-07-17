@@ -39,7 +39,7 @@ def main():
     4545 times/second
     """
     t1 = time.time()
-    n = 1000
+    n = 10
     for i in xrange(1, n):
         v = r.eval(lua_code, 1, "aac","xyz")
 
@@ -51,6 +51,9 @@ def main():
     print(1000/t)
     print(v)
     
+    h = r.script_load("return 'hello moto'")
+    print h
+    print dir(r)
     
 if __name__ == "__main__":
     main()
