@@ -21,6 +21,10 @@ def main():
     """
 
     lua_code = """if redis.call("EXISTS", KEYS[1]) == 1 then
+    
+        redis.call("LPUSH", "c1","chan1")
+        redis.call("PUBLISH", "c1","new")
+    
         local payload = redis.call("GET", KEYS[1])
         if payload == ARGV[1] then
             return "same"  
@@ -39,8 +43,8 @@ def main():
     4545 times/second
     """
     t1 = time.time()
-    n = 10
-    for i in xrange(1, n):
+    n = 1
+    for i in xrange(0, n):
         v = r.eval(lua_code, 1, "aac","xyz")
 
     t2 = time.time()
