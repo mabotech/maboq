@@ -1,0 +1,1 @@
+celery -A t1 worker -l info

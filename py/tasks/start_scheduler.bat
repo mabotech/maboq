@@ -1,0 +1,1 @@
+celery -A t2 beat -l info
